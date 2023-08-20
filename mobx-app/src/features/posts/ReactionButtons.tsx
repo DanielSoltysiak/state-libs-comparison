@@ -1,34 +1,36 @@
 import { Post, ReactionType } from "../../types"
-import { useDispatch } from "react-redux"
 
-import { reactionAdded } from "./postsSlice"
+import { postsStore } from "./postsStore"
+import { observer } from "mobx-react-lite"
 
-const reactionEmoji = {
+type Entries<T> = {
+  [K in keyof T]: [K, T[K]]
+}[keyof T][]
+
+type ReactionEmojiEntries = Entries<typeof reactionEmoji>
+
+export const reactionEmoji = {
   thumbsUp: "👍",
   hooray: "🎉",
   heart: "❤️",
   rocket: "🚀",
   eyes: "👀",
-}
+} as const
 
 interface Props {
   post: Post
 }
 
-export const ReactionButtons = ({ post }: Props) => {
-  const dispatch = useDispatch()
-
-  const reactionButtons = Object.entries(reactionEmoji).map(([name, emoji]) => {
+export const ReactionButtons = observer(({ post }: Props) => {
+  const reactionButtons = (
+    Object.entries(reactionEmoji) as ReactionEmojiEntries
+  ).map(([name, emoji]) => {
     return (
       <button
         key={name}
         type="button"
         className="muted-button reaction-button"
-        onClick={() =>
-          dispatch(
-            reactionAdded({ postId: post.id, reaction: name as ReactionType }),
-          )
-        }
+        onClick={() => postsStore.addReaction(post.id, name)}
       >
         {emoji} {post.reactions[name as ReactionType]}
       </button>
@@ -36,4 +38,4 @@ export const ReactionButtons = ({ post }: Props) => {
   })
 
   return <div>{reactionButtons}</div>
-}
+})

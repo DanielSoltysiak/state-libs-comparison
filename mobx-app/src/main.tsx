@@ -2,7 +2,6 @@ import React from "react"
 import ReactDOM from "react-dom"
 import "./index.css"
 import App from "./App"
-import store from "./app/store"
 import { Provider } from "react-redux"
 import { usersStore } from "./features/users/usersStore"
 import { worker } from "./api/server"
@@ -16,9 +15,7 @@ async function start() {
 
   ReactDOM.render(
     <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <App />
     </React.StrictMode>,
     document.getElementById("root"),
   )

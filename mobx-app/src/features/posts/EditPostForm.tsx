@@ -1,21 +1,17 @@
 import { ChangeEvent, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 
-import { postUpdated, selectPostById } from "./postsSlice"
-import { RootState } from "../../types"
+import { postsStore } from "./postsStore"
+import { observer } from "mobx-react-lite"
 
-export const EditPostForm = () => {
+export const EditPostForm = observer(() => {
   const { postId } = useParams()
 
-  const post = useSelector((state: RootState) =>
-    selectPostById(state, postId as string),
-  )
+  const post = postsStore.selectPostById(postId as string)
 
   const [title, setTitle] = useState(post?.title)
   const [content, setContent] = useState(post?.content)
 
-  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const onTitleChanged = (e: ChangeEvent<HTMLInputElement>) =>
@@ -25,7 +21,7 @@ export const EditPostForm = () => {
 
   const onSavePostClicked = () => {
     if (title && content) {
-      dispatch(postUpdated({ id: postId, title, content }))
+      postsStore.updatePost(postId as string, title, content)
       navigate(`/posts/${postId}`)
     }
   }
@@ -56,4 +52,4 @@ export const EditPostForm = () => {
       </button>
     </section>
   )
-}
+})

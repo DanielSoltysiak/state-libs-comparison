@@ -1,17 +1,15 @@
 import { useState, ChangeEvent } from "react"
-import { useDispatch, useSelector } from "react-redux"
 
-import { addNewPost } from "./postsSlice"
-import { AppDispatch, RequestStatus, RootState } from "../../types"
+import { postsStore } from "./postsStore"
+import { RequestStatus } from "../../types"
 import { usersStore } from "../users/usersStore"
+import { observer } from "mobx-react-lite"
 
-export const AddPostForm = () => {
+export const AddPostForm = observer(() => {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const [userId, setUserId] = useState("")
   const [addReqestStatus, setAddRequestStatus] = useState<RequestStatus>("idle")
-
-  const dispatch = useDispatch<AppDispatch>()
 
   const users = usersStore.users
 
@@ -29,7 +27,7 @@ export const AddPostForm = () => {
     if (canSave) {
       try {
         setAddRequestStatus("loading")
-        await dispatch(addNewPost({ title, content, user: userId })).unwrap()
+        await postsStore.addNewPost({ title, content, user: userId })
         setTitle("")
         setContent("")
         setUserId("")
@@ -77,4 +75,4 @@ export const AddPostForm = () => {
       </form>
     </section>
   )
-}
+})

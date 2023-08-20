@@ -1,18 +1,15 @@
-import { useSelector } from "react-redux"
-import { RootState } from "../../types"
 import { useParams, Link } from "react-router-dom"
 
 import { PostAuthor } from "./PostAuthor"
 import { TimeAgo } from "./TimeAgo"
 import { ReactionButtons } from "./ReactionButtons"
-import { selectPostById } from "./postsSlice"
+import { postsStore } from "./postsStore"
+import { observer } from "mobx-react-lite"
 
-export const SinglePostPage = () => {
+export const SinglePostPage = observer(() => {
   const { postId } = useParams()
 
-  const post = useSelector((state: RootState) =>
-    selectPostById(state, postId as string),
-  )
+  const post = postsStore.selectPostById(postId as string)
 
   if (!post) {
     return (
@@ -38,4 +35,4 @@ export const SinglePostPage = () => {
       </article>
     </section>
   )
-}
+})

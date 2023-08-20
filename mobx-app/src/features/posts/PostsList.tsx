@@ -1,22 +1,21 @@
 import { useEffect, memo } from "react"
-import { useSelector, useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
 
 import { Spinner } from "../../components/Spinner"
 import { PostAuthor } from "./PostAuthor"
 import { TimeAgo } from "./TimeAgo"
 import { ReactionButtons } from "./ReactionButtons"
-import { fetchPosts, selectPostIds, selectPostById } from "./postsSlice"
-import { RootState } from "../../types"
-import { EntityId } from "@reduxjs/toolkit"
+import { postsStore } from "./postsStore"
+import { Post } from "../../types"
+import { observer } from "mobx-react-lite"
 
 interface IPostExcerpt {
-  postId: EntityId
+  post?: Post
 }
 
-const PostExcerpt = memo(({ postId }: IPostExcerpt) => {
-  let post = useSelector((state: RootState) => selectPostById(state, postId))
+const PostExcerpt = observer(({ post }: IPostExcerpt) => {
   if (!post) return null
+
   return (
     <article className="post-excerpt">
       <h3>{post.title}</h3>
@@ -34,34 +33,35 @@ const PostExcerpt = memo(({ postId }: IPostExcerpt) => {
   )
 })
 
-export const PostsList = () => {
-  const dispatch = useDispatch()
-  const orderedPostsIds = useSelector(selectPostIds)
-
-  const postStatus = useSelector((state: RootState) => state.posts.status)
-  const error = useSelector((state: RootState) => state.posts.error)
+export const PostsList = observer(() => {
+  const postStatus = postsStore.postsStatus
+  const error = postsStore.postsError
 
   useEffect(() => {
     if (postStatus === "idle") {
-      dispatch(fetchPosts())
+      postsStore.fetchPosts()
     }
-  }, [postStatus, dispatch])
+  }, [postStatus])
 
-  let content
   if (postStatus === "loading") {
-    content = <Spinner text="Loading..." />
-  } else if (postStatus === "succeeded") {
-    content = orderedPostsIds.map((postId) => (
-      <PostExcerpt key={postId} postId={postId} />
-    ))
-  } else if (postStatus === "failed") {
-    content = <div>{error}</div>
+    return (
+      <section className="posts-list">
+        <h2>Posts</h2>
+        <Spinner text="Loading..." />
+      </section>
+    )
+  }
+
+  if (postStatus === "failed") {
+    return <div>{typeof error === "string" ? error : "Unknown error"}</div>
   }
 
   return (
     <section className="posts-list">
       <h2>Posts</h2>
-      {content}
+      {postsStore.posts.map((post) => (
+        <PostExcerpt key={post.id} post={post} />
+      ))}
     </section>
   )
-}
+})
