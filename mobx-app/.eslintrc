@@ -1,0 +1,17 @@
+{
+    "rules": {
+      "jsx-a11y/tabindex-no-positive": "off",
+      "no-console": "warn",
+      "no-restricted-exports": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-use-before-define": "off",
+      "@typescript-eslint/no-shadow": "off",
+      "import/no-cycle": "off",
+      "react/no-children-prop": "off",
+      "react/jsx-curly-brace-presence": "off",
+      "no-plusplus": 
+        [1, {"allowForLoopAfterthoughts": true}]
+      
+    }
+  }
+  
