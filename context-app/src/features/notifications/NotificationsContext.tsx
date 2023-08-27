@@ -12,10 +12,13 @@ const useNotifications = (initial: Notification[] = []) => {
   return {
     notifications,
     allNotificationsRead: () => {
-      const readNotifications = notifications.map(
-        (notification) => ((notification.read = true), { ...notification }),
-      )
-      setNotifications(readNotifications)
+      if (notifications.find((notification) => notification.read !== true)) {
+        setNotifications((prevState) =>
+          prevState.map(
+            (notification) => ((notification.read = true), { ...notification }),
+          ),
+        )
+      }
     },
     fetchNotifiactions: async () => {
       const [latestNotifiaction] = notifications
@@ -24,7 +27,10 @@ const useNotifications = (initial: Notification[] = []) => {
         `/fakeApi/notifications?since=${latestTimestamp}`,
       )
       if (respone.data) {
-        const sortedNotifications = sortNotificatons(respone.data)
+        const sortedNotifications = sortNotificatons([
+          ...respone.data,
+          ...notifications,
+        ])
         const markedNotifications = sortedNotifications.map(
           (notification) => (
             (notification.isNew = !notification.read), { ...notification }

@@ -8,7 +8,7 @@ export const NotificationsList = () => {
   const { notifications, allNotificationsRead } = useNotificationsContext()
   const { users } = useUsersContext()
 
-  useLayoutEffect(() => allNotificationsRead(), [])
+  useLayoutEffect(() => allNotificationsRead())
 
   const renderedNotifications = notifications.map((notification) => {
     const date = parseISO(notification.date)
