@@ -13,27 +13,6 @@ const sortPosts = (posts: Post[]) => {
   return sortedPosts
 }
 
-export async function fetchPosts(dispatch: any) {
-  dispatch({ type: "startFetch" })
-
-  try {
-    const response = await client.get("fakeApi/posts")
-    if (response.data) {
-      const sortedPosts = sortPosts(response.data)
-      dispatch({ type: "finishFetch", posts: sortedPosts })
-    }
-  } catch (error) {
-    dispatch({ type: "failFetch", error })
-  }
-}
-
-export async function addNewPost(dispatch: any, initialPost: InitialPost) {
-  const response = await client.post("fakeApi/posts", initialPost)
-  if (response.data) {
-    dispatch({ type: "addNewPost", post: response.data })
-  }
-}
-
 interface ContextValue {
   posts: Post[]
   postsError: unknown
@@ -91,7 +70,7 @@ export const PostsContextProvider = ({ children }: PropsWithChildren) => {
       },
       addNewPost: async (initialPost: InitialPost) => {
         const response = await client.post("fakeApi/posts", initialPost)
-        setPosts(sortPosts([posts + response.data]))
+        setPosts((prevState) => sortPosts([...prevState, response.data]))
       },
       postUpdated: (postId: string, title: string, content: string) => {
         setPosts((prevState) =>

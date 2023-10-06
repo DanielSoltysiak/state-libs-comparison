@@ -22,14 +22,18 @@ export const SinglePostPage = () => {
   return (
     <section>
       <article className="post">
-        <h2>{post.title}</h2>
+        <h2 data-test="post-title">{post.title}</h2>
         <div>
           <PostAuthor userId={post.user} />
           <TimeAgo timestamp={post.date} />
         </div>
         <p className="post-content">{post.content}</p>
         <ReactionButtons post={post} />
-        <Link to={`/editPost/${post.id}`} className="button">
+        <Link
+          data-test="edit-post"
+          to={`/editPost/${post.id}`}
+          className="button"
+        >
           Edit Post
         </Link>
       </article>

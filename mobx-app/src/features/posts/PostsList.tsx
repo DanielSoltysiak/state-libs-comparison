@@ -26,7 +26,11 @@ const PostExcerpt = observer(({ post }: IPostExcerpt) => {
       <p className="post-content">{post.content.substring(0, 100)}</p>
 
       <ReactionButtons post={post} />
-      <Link to={`/posts/${post.id}`} className="button muted-button">
+      <Link
+        data-test="view-post"
+        to={`/posts/${post.id}`}
+        className="button muted-button"
+      >
         View Post
       </Link>
     </article>
@@ -57,7 +61,7 @@ export const PostsList = observer(() => {
   }
 
   return (
-    <section className="posts-list">
+    <section data-test="posts-list" className="posts-list">
       <h2>Posts</h2>
       {postsStore.posts.map((post) => (
         <PostExcerpt key={post.id} post={post} />

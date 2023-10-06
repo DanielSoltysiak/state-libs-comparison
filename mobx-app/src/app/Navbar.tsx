@@ -12,7 +12,9 @@ const Navbar = () => {
 
   if (numUnreadNotifications > 0)
     unreadNotificationsBadge = (
-      <span className="badge">{numUnreadNotifications}</span>
+      <span className="badge" data-test="badge">
+        {numUnreadNotifications}
+      </span>
     )
 
   return (
@@ -22,13 +24,21 @@ const Navbar = () => {
 
         <div className="navContent">
           <div className="navLinks">
-            <Link to="/">Posts</Link>
-            <Link to="/users">Users</Link>
-            <Link to="/notifications">
+            <Link to="/" data-test="navigation-posts">
+              Posts
+            </Link>
+            <Link to="/users" data-test="navigation-users">
+              Users
+            </Link>
+            <Link to="/notifications" data-test="navigation-notifications">
               Notifications {unreadNotificationsBadge}
             </Link>
           </div>
-          <button className="button" onClick={fetchNewNotifications}>
+          <button
+            data-test="refresh-notifications"
+            className="button"
+            onClick={fetchNewNotifications}
+          >
             Refresh Notifications
           </button>
         </div>

@@ -21,6 +21,7 @@ export const ReactionButtons = ({ post }: Props) => {
   const reactionButtons = Object.entries(reactionEmoji).map(([name, emoji]) => {
     return (
       <button
+        data-test={`${name}-button`}
         key={name}
         type="button"
         className="muted-button reaction-button"

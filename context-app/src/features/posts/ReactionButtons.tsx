@@ -29,6 +29,7 @@ export const ReactionButtons = memo(({ post }: Props) => {
   ).map(([name, emoji]) => {
     return (
       <button
+        data-test={`${name}-button`}
         key={name}
         type="button"
         className="muted-button reaction-button"

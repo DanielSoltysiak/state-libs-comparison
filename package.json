@@ -1,0 +1,36 @@
+{
+  "name": "state-libs-comparison",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "context": "cd context-app && yarn dev",
+    "mobx": "cd mobx-app && yarn dev",
+    "redux": "cd redux-app && yarn dev",
+    "cypress:open": "cypress open"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.1.0",
+    "cypress": "^12.17.4",
+    "eslint-plugin-cypress": "^2.14.0",
+    "prettier": "^3.0.3",
+    "prettier-config-nick": "^1.0.2",
+    "typescript": "^5.2.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": "error",
+      "react/jsx-no-target-blank": "off"
+    }
+  },
+  "prettier": "prettier-config-nick"
+}

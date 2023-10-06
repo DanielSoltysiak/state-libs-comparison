@@ -51,6 +51,7 @@ export const AddPostForm = () => {
       <form>
         <label htmlFor="postTitle">Post Title:</label>
         <input
+          data-test="post-title-input"
           type="text"
           id="postTitle"
           name="postTitle"
@@ -58,18 +59,29 @@ export const AddPostForm = () => {
           onChange={onTitleChanged}
         />
         <label htmlFor="postAuthor">Author:</label>
-        <select id="postAuthor" value={userId} onChange={onAuthorChanged}>
+        <select
+          data-test="post-author-select"
+          id="postAuthor"
+          value={userId}
+          onChange={onAuthorChanged}
+        >
           <option value=""></option>
           {usersOptions}
         </select>
         <label htmlFor="postContent">Content:</label>
         <textarea
+          data-test="post-content-input"
           id="postContent"
           name="postContent"
           value={content}
           onChange={onContentChanged}
         />
-        <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
+        <button
+          data-test="save-post"
+          type="button"
+          onClick={onSavePostClicked}
+          disabled={!canSave}
+        >
           Save Post
         </button>
       </form>

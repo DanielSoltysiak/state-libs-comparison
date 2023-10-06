@@ -33,6 +33,7 @@ export const EditPostForm = () => {
       <form>
         <label htmlFor="postTitle">Post Title:</label>
         <input
+          data-test="post-title-input"
           type="text"
           id="postTitle"
           name="postTitle"
@@ -48,7 +49,7 @@ export const EditPostForm = () => {
           onChange={onContentChanged}
         />
       </form>
-      <button type="button" onClick={onSavePostClicked}>
+      <button data-test="save-post" type="button" onClick={onSavePostClicked}>
         Save Post
       </button>
     </section>
