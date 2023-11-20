@@ -1,13 +1,54 @@
+const xlsx = require("xlsx")
+
+let accumulatedResults = []
+
 describe("Use application", () => {
-  it("Does tested actions on page", () => {
-    cy.visit("http://127.0.0.1:5173/")
+  before(() => {
+    // Set up the initial Excel file
+    const ws = xlsx.utils.json_to_sheet(accumulatedResults)
+    const wb = xlsx.utils.book_new()
+    xlsx.utils.book_append_sheet(wb, ws, "WebVitalsResults")
+    xlsx.writeFile(wb, "web_vitals_results_combined.xlsx")
+  })
+
+  after(() => {
+    // Save accumulated results to the Excel file
+    const ws = xlsx.utils.json_to_sheet(accumulatedResults)
+    const wb = xlsx.utils.book_new()
+    xlsx.utils.book_append_sheet(wb, ws, "WebVitalsResults")
+    xlsx.writeFile(wb, "web_vitals_results_combined.xlsx")
+    cy.log("Web vitals results saved to: web_vitals_results_combined.xlsx")
+  })
+
+  beforeEach(() => {
+    cy.visit("http://localhost:5173/")
+  })
+
+  it("Chcecks app load time", () => {
     cy.window()
       .its("performance.timing")
       .then((timing) => {
         const loadTime = timing.domInteractive - timing.navigationStart
         cy.log(`App Load Time: ${loadTime}ms`)
       })
+  })
 
+  for (let i = 1; i <= 2; i++) {
+    it(`Performs audit against the Google Web Vitals - Run ${i}`, () => {
+      cy.vitals({
+        onReport({ results }) {
+          accumulatedResults = accumulatedResults.concat({
+            lcp: results.lcp,
+            cls: results.cls,
+            fcp: results.fcp,
+            ttfb: results.ttfb,
+          })
+        },
+      })
+    })
+  }
+
+  it("Does tested actions on page", () => {
     cy.getByData("posts-list")
       .get(":nth-child(2)")
       .getByData("thumbsUp-button")

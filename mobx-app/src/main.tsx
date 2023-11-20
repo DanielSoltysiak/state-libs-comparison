@@ -2,7 +2,6 @@ import React from "react"
 import ReactDOM from "react-dom"
 import "./index.css"
 import App from "./App"
-import { Provider } from "react-redux"
 import { usersStore } from "./features/users/usersStore"
 import { worker } from "./api/server"
 

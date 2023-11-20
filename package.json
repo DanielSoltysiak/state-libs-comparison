@@ -14,10 +14,14 @@
     "@types/chai": "^4.3.0",
     "@types/mocha": "^9.1.0",
     "cypress": "^12.17.4",
+    "cypress-real-events": "^1.11.0",
+    "cypress-web-vitals": "^4.1.0",
     "eslint-plugin-cypress": "^2.14.0",
     "prettier": "^3.0.3",
     "prettier-config-nick": "^1.0.2",
-    "typescript": "^5.2.2"
+    "process": "^0.11.10",
+    "typescript": "^5.2.2",
+    "xlsx": "0.16.5"
   },
   "eslintConfig": {
     "extends": [
