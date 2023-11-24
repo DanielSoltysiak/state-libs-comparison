@@ -33,15 +33,18 @@ describe("Use application", () => {
       })
   })
 
-  for (let i = 1; i <= 2; i++) {
-    it(`Performs audit against the Google Web Vitals - Run ${i}`, () => {
+  for (let i = 1; i <= 100; i++) {
+    it.only(`Performs audit against the Google Web Vitals - Run ${i}`, () => {
       cy.vitals({
+        firstInputSelector: [
+          '[data-test="post-title-input"]',
+          '[data-test="post-content-input"]',
+        ],
         onReport({ results }) {
           accumulatedResults = accumulatedResults.concat({
             lcp: results.lcp,
+            fid: results.fid,
             cls: results.cls,
-            fcp: results.fcp,
-            ttfb: results.ttfb,
           })
         },
       })
